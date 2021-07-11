@@ -1,0 +1,111 @@
+basePath: /api/v1
+definitions:
+  service.PerfRunRequest:
+    properties:
+      cloud:
+        type: string
+      durationinmins:
+        type: integer
+      suitename:
+        type: string
+      testname:
+        type: string
+    type: object
+  service.PerfRunResult:
+    properties:
+      cloud:
+        type: string
+      durationinmins:
+        type: integer
+      id:
+        type: integer
+      suitename:
+        type: string
+      testname:
+        type: string
+    type: object
+  utils.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+info:
+  contact:
+    email: centralperformance@salesforce.com
+    name: Central Performance
+  description: Per Run Service
+  title: PerfRun API
+  version: "1.0"
+paths:
+  /health:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show the status of server.
+      tags:
+      - root
+  /perfrunws:
+    post:
+      consumes:
+      - application/json
+      operationId: create-new-perfrun
+      parameters:
+      - description: Create PerfRun
+        in: body
+        name: perfRunRequest
+        required: true
+        schema:
+          $ref: '#/definitions/service.PerfRunRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.PerfRunResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+      summary: Create New Perfrun
+      tags:
+      - Perfrun
+  /perfrunws/{id}:
+    get:
+      consumes:
+      - application/json
+      operationId: get-perfrun-by-id
+      parameters:
+      - description: Perfrun ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.PerfRunResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+      summary: Get Perfrun
+      tags:
+      - Perfrun
+swagger: "2.0"

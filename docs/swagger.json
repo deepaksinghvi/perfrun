@@ -1,0 +1,169 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Per Run Service",
+        "title": "PerfRun API",
+        "contact": {
+            "name": "Central Performance",
+            "email": "centralperformance@salesforce.com"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Show the status of server.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/perfrunws": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Perfrun"
+                ],
+                "summary": "Create New Perfrun",
+                "operationId": "create-new-perfrun",
+                "parameters": [
+                    {
+                        "description": "Create PerfRun",
+                        "name": "perfRunRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/service.PerfRunRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.PerfRunResult"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/perfrunws/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Perfrun"
+                ],
+                "summary": "Get Perfrun",
+                "operationId": "get-perfrun-by-id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Perfrun ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.PerfRunResult"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "service.PerfRunRequest": {
+            "type": "object",
+            "properties": {
+                "cloud": {
+                    "type": "string"
+                },
+                "durationinmins": {
+                    "type": "integer"
+                },
+                "suitename": {
+                    "type": "string"
+                },
+                "testname": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.PerfRunResult": {
+            "type": "object",
+            "properties": {
+                "cloud": {
+                    "type": "string"
+                },
+                "durationinmins": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "suitename": {
+                    "type": "string"
+                },
+                "testname": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.HTTPError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "status bad request"
+                }
+            }
+        }
+    }
+}
